@@ -1,8 +1,10 @@
 {
   "dependencies": {
+    "node-fetch": "^3.0.0",
     "pdf-parse": "^1.1.1"
   },
   "scripts": {
-    "start": "node app.js"
+    "start": "node parse.js",
+    "fetch": "node fetchLogos.mjs"
   }
 }
