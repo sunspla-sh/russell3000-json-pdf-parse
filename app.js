@@ -1,7 +1,7 @@
 const fs = require('fs');
 const pdf = require('pdf-parse');
- 
-let dataBuffer = fs.readFileSync('./Russell3000USMembershiplist.pdf');
+
+console.log('Setting up our pdf parser customizations...')
 
 //we set up this render_page function to insert space between the company name and its associated symbol/ticker
 function render_page(pageData) {
@@ -31,7 +31,15 @@ function render_page(pageData) {
 let options = {
   pagerender: render_page
 }
+
+console.log('Loading our pdf from filesystem...')
+
+//here we load our pdf
+let dataBuffer = fs.readFileSync('./Russell3000USMembershiplist.pdf');
+
 pdf(dataBuffer, options).then(function(data) {
+
+  console.log('Cleaning our data...');
 
   let parsedText = data.text;
 
@@ -59,6 +67,8 @@ pdf(dataBuffer, options).then(function(data) {
   //remove all dates, which conveniently contain lowercase letters, while company names and symbols/tickers are entirely uppercase
   parsedText = parsedText.filter(e => e.toUpperCase() == e)
 
+  console.log('Converting our cleaned data into JSON format...');
+
   //begin parsing into JSON
   let symbols = {};
 
@@ -75,11 +85,16 @@ pdf(dataBuffer, options).then(function(data) {
     symbols[key] = value;
   });
 
+  console.log('Stringifying our JSON data');
+
   //stringify our Object as JSON so we can write it to filesystem
   symbols = JSON.stringify(symbols);
+
+  console.log('Writing to file...');
 
   //write our JSON to filesystem
   fs.writeFileSync('symbols.json', symbols);
 
+  console.log('All done!')
 });
 

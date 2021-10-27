@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "pdf-parse": "^1.1.1"
+  },
+  "scripts": {
+    "start": "node app.js"
   }
 }
